@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "nth python framework"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = ["pydantic>=2.11.9", "uvicorn>=0.37.0", "watchfiles>=1.1.0"]
+dependencies = ["pydantic>=2.11.9"]
 
 [build-system]
 requires = ["hatchling"]
@@ -14,6 +14,6 @@ build-backend = "hatchling.build"
 packages = ["nextpress"]
 
 [dependency-groups]
-dev = ["ruff>=0.13.2"]
+dev = ["ruff>=0.13.2", "uvicorn>=0.37.0", "watchfiles>=1.1.0"]
 [tool.ruff]
 ignore = ["E731"]
