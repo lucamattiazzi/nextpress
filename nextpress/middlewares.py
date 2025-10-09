@@ -25,6 +25,6 @@ async def cors_middleware(request: Request, response: Response, anext: Anext):
     response.set_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
     if request.method == "OPTIONS":
         response.set_status_code(204)
-        await response.send()
+        await response.send_text("")
     else:
         await anext()

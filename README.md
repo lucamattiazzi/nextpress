@@ -22,7 +22,7 @@ async def logger(request: Request, response: Response, anext: Anext):
 
 
 async def hello(response: Response[str]):
-    await response.send("Hello, World!")
+    await response.send_text("Hello, World!")
 
 app.get("/", logger, hello)
 ```

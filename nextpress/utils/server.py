@@ -18,6 +18,9 @@ def get_best_route(method: str, pattern: str, routes: list[Route]) -> Route:
 async def run_middlewares(
     middlewares: list[Callable], request: Request, response: Response
 ) -> None:
+    if not len(middlewares):
+        return
+
     current_idx = 0
 
     async def anext():

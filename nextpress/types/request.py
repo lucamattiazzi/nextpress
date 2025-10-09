@@ -10,6 +10,10 @@ class Request[InputT](BaseModel):
     receive: Callable
     query_params: dict = {}
 
+    class Config:
+        arbitrary_types_allowed = True
+        underscore_attrs_are_private = True
+
     async def get_body(self) -> bytes:
         body = b""
         more_body = True

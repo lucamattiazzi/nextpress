@@ -18,6 +18,10 @@ class Response[OutputT](BaseModel):
     _headers_sent: bool = False
     _is_chunked: bool = False
 
+    class Config:
+        arbitrary_types_allowed = True
+        underscore_attrs_are_private = True
+
     ## private
     def _set_header(self, key: str, value: str):
         self._headers_buffer.append(
@@ -65,13 +69,15 @@ class Response[OutputT](BaseModel):
 
     async def write(self, content: str | bytes):
         self._is_chunked = True
+        self._set_header("Transfer-Encoding", "chunked")
         if isinstance(content, str):
             self._set_header("Content-Type", "text/plain; charset=utf-8")
-            self._set_header("Transfer-Encoding", "chunked")
-            await self._send_headers()
-        await asgi_send_body(self.asgi_send, content.encode("utf-8"), more_body=True)
-
-        return await self._write_bytes(content)
+            body = content.encode("utf-8")
+        else:
+            self._set_header("Content-Type", "application/octet-stream")
+            body = content
+        await self._send_headers()
+        await asgi_send_body(self.asgi_send, body, more_body=True)
 
     async def end(self, content: str = ""):
         if self._response_closed:
