@@ -1,7 +1,8 @@
-import pytest
 import json
 
-from nextpress.types import Response
+import pytest
+
+from nextpress.entities import Response
 
 
 class TestResponse:

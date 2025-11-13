@@ -46,6 +46,12 @@ async def data(
     await response.send_json({"message": body})
 
 
+async def version(request: Request, response: Response):
+    version = request.route_params.get("version", "unknown")
+    await response.send_json({"message": f"API Version: {version}"})
+
+
 app.get("/", root)
 app.get("/api", logger, api)
 app.post("/data", json_body_parser, data)
+app.get("/api/:version/info", version)

@@ -1,13 +1,14 @@
-import pytest
 from typing import Any
+
+import pytest
 from pydantic import BaseModel
 
+from nextpress.entities import Request, Response
 from nextpress.utils.types import (
     extract_query_params,
     extract_request_type,
     extract_response_type,
 )
-from nextpress.types import Request, Response
 
 
 class TestExtractQueryParams:

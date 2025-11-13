@@ -1,10 +1,11 @@
-import pytest
-from typing import TypedDict
-import time
 import json
+import time
+from typing import TypedDict
 
-from nextpress import Nextpress, Request, Response, Anext
-from nextpress.middlewares import json_body_parser, cors_middleware
+import pytest
+
+from nextpress import Anext, Nextpress, Request, Response
+from nextpress.middlewares import cors_middleware, json_body_parser
 
 
 class UserPayload(TypedDict):
@@ -385,17 +386,13 @@ class TestIntegrationComplexScenarios:
     async def test_full_request_response_cycle(self):
         app = Nextpress()
 
-        async def timing_middleware(
-            request: Request, response: Response, anext: Anext
-        ):
+        async def timing_middleware(request: Request, response: Response, anext: Anext):
             start_time = time.time()
             await anext()
             elapsed = time.time() - start_time
             response.local_state["elapsed"] = elapsed
 
-        async def create_item(
-            request: Request[dict], response: Response[dict]
-        ):
+        async def create_item(request: Request[dict], response: Response[dict]):
             body = request.body or {}
             item_name = body.get("name", "Unknown")
             await response.send_json(

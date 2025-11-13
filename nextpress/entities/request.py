@@ -9,6 +9,7 @@ class Request[InputT](BaseModel):
     path: str
     receive: Callable
     query_params: dict = {}
+    route_params: dict = {}
 
     class Config:
         arbitrary_types_allowed = True

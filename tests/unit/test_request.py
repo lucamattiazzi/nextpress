@@ -1,6 +1,6 @@
 import pytest
 
-from nextpress.types import Request
+from nextpress.entities import Request
 
 
 class TestRequest:

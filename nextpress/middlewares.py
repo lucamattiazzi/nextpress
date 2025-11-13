@@ -1,6 +1,6 @@
 import json
 
-from nextpress.types import Anext, Request, Response
+from nextpress.entities import Anext, Request, Response
 
 
 async def json_body_parser(request: Request, response: Response, anext: Anext):

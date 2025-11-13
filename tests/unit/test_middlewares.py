@@ -1,8 +1,9 @@
-import pytest
 import json
 
-from nextpress.types import Request, Response
-from nextpress.middlewares import json_body_parser, cors_middleware
+import pytest
+
+from nextpress.entities import Request, Response
+from nextpress.middlewares import cors_middleware, json_body_parser
 
 
 class TestJsonBodyParser:
@@ -241,7 +242,11 @@ class TestCorsMiddleware:
         assert anext_called is False
 
         # Should still have CORS headers
-        headers_dict = dict(response._headers_buffer) if response._headers_buffer else dict(sent_data[0]["headers"])
+        headers_dict = (
+            dict(response._headers_buffer)
+            if response._headers_buffer
+            else dict(sent_data[0]["headers"])
+        )
         assert b"Access-Control-Allow-Origin" in headers_dict
 
     @pytest.mark.asyncio

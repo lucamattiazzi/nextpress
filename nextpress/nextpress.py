@@ -1,11 +1,9 @@
 from typing import Callable
 
+from nextpress.entities import Request, Response, Route
 from nextpress.errors import error_404, error_500
-from nextpress.types import Request, Response, Route
-from nextpress.utils.server import (
-    get_best_route,
-    run_middlewares,
-)
+from nextpress.utils.routes import extract_route_params, find_best_route
+from nextpress.utils.server import run_middlewares
 from nextpress.utils.types import (
     extract_query_params,
     extract_request_type,
@@ -64,18 +62,23 @@ class Nextpress:
         try:
             path = scope.get("path", "")
             method = scope.get("method", "GET")
-            best_match = get_best_route(method, path, self.routes)
+            best_match = find_best_route(
+                self.routes,
+                method,
+                path,
+            )
             if not best_match:
                 return await error_404(send)
 
             request_type = extract_request_type(best_match.handlers)
             response_type = extract_response_type(best_match.handlers)
             query_params = extract_query_params(scope.get("query_string", b""))
+            route_params = extract_route_params(best_match, path)
             request = Request[request_type](
                 method=method,
                 path=path,
                 receive=receive,
-                route_params=best_match.route_params,
+                route_params=route_params,
                 query_params=query_params,
             )
             response = Response[response_type](asgi_send=send)
