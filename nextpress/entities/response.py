@@ -44,6 +44,9 @@ class Response[OutputT](BaseModel):
         await asgi_send_body(self.asgi_send, content, more_body=True)
         await self.end()
 
+    def validate_body(self, body: OutputT) -> OutputT:
+        return body
+
     ## public
     def set_header(self, key: str, value: str):
         if self._headers_sent:
@@ -63,6 +66,7 @@ class Response[OutputT](BaseModel):
 
     async def send_json(self, content: dict):
         content_str = json.dumps(content)
+
         await self._send_body(
             content_str, content_type="application/json; charset=utf-8"
         )
